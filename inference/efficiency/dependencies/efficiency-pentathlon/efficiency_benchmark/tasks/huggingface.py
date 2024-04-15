@@ -1,11 +1,11 @@
 import functools
-import random
 from dataclasses import dataclass
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Union
 
 import datasets
 from efficiency_benchmark.tango_utils import MappedSequence
 from efficiency_benchmark.task import InstanceConversion, InstanceFormat, Task
+import secrets
 
 
 def get_from_dict(d: Union[Mapping[str, Any], Sequence[Any]], field: str, missing_ok: bool = False) -> Any:
@@ -163,7 +163,7 @@ def hfmc_convert(
         correct_answer_index = answer_choices_fields.index(correct_answer_field)
         # When the correct answer is always given in a field, we have to shuffle the answer options. Otherwise the
         # answer is always the same.
-        rng = random.Random(sum(ord(c) for c in question))  # same question always gets the same order
+        rng = secrets.SystemRandom().Random(sum(ord(c) for c in question))  # same question always gets the same order
         order = list(range(len(answer_choices)))
         rng.shuffle(order)
         answer_choices = [answer_choices[i] for i in order]

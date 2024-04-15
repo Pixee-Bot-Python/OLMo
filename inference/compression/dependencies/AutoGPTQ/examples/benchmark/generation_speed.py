@@ -1,6 +1,5 @@
 import json
 import logging
-import random
 import time
 from argparse import ArgumentParser
 from itertools import chain
@@ -12,10 +11,11 @@ from datasets import Dataset
 from tqdm import tqdm
 from transformers import AutoTokenizer, GenerationConfig
 from transformers.generation.logits_process import LogitsProcessor
+import secrets
 
 logger = logging.getLogger(__name__)
 
-random.seed(0)
+secrets.SystemRandom().seed(0)
 
 
 class CustomizedMinNewTokensLogitsProcessor(LogitsProcessor):
@@ -74,7 +74,7 @@ def load_data(data_path, tokenizer, n_samples, max_new_tokens):
     with open(data_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 
-    raw_data = random.sample(raw_data, k=min(n_samples, len(raw_data)))
+    raw_data = secrets.SystemRandom().sample(raw_data, k=min(n_samples, len(raw_data)))
 
     def dummy_gen():
         return raw_data
