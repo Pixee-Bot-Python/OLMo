@@ -23,6 +23,7 @@ dependencies = [
     "packaging",
     "cached_path",
     "transformers",
+    "security==1.2.1",
 ]
 
 [project.optional-dependencies]
