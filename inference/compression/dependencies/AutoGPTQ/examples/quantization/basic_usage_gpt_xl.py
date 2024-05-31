@@ -53,7 +53,7 @@ def main():
     model = AutoGPTQForCausalLM.from_pretrained(pretrained_model_dir, quantize_config)
     model_config = model.config.to_dict()
     seq_len_keys = ["max_position_embeddings", "seq_length", "n_positions"]
-    if any([k in model_config for k in seq_len_keys]):
+    if any(k in model_config for k in seq_len_keys):
         for key in seq_len_keys:
             if key in model_config:
                 model.seqlen = model_config[key]

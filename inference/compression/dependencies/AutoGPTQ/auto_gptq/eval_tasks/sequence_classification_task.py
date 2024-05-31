@@ -53,7 +53,7 @@ class SequenceClassificationTask(BaseTask):
         )
         self.classes = [each.lower().strip() for each in classes]
         classes_ids = self.tokenizer(classes)
-        self.max_new_tokens = max([len(each) for each in classes_ids])
+        self.max_new_tokens = max(len(each) for each in classes_ids)
 
     def _predict(self, batch_data: Dict[str, Any], *args, **kwargs) -> List[int]:
         generation_config = kwargs["generation_config"]

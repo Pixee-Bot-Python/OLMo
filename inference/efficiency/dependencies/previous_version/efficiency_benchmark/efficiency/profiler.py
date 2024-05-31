@@ -67,26 +67,14 @@ class Profiler:
     def _profile_gpu(self):
         all_gpu_details: List[Dict] = get_gpu_details()
         used_memory = sum(
-            [
-                gpu_details["used_memory"]
-                for _, gpu_details in enumerate(all_gpu_details)
-                # if idx in self.gpu_ids
-            ]
-        )
+            gpu_details["used_memory"]
+                for _, gpu_details in enumerate(all_gpu_details))
         gpu_utilization = sum(
-            [
-                gpu_details["gpu_utilization"]
-                for _, gpu_details in enumerate(all_gpu_details)
-                # if idx in self.gpu_ids
-            ]
-        )
+            gpu_details["gpu_utilization"]
+                for _, gpu_details in enumerate(all_gpu_details))
         gpu_power = sum(
-            [
-                gpu_details["power_usage"] * 1e-3
-                for _, gpu_details in enumerate(all_gpu_details)
-                # if idx in self.gpu_ids
-            ]
-        )
+            gpu_details["power_usage"] * 1e-3
+                for _, gpu_details in enumerate(all_gpu_details))
         self._max_used_gpu_memory = max(self._max_used_gpu_memory, used_memory)
         self._gpu_utilization += gpu_utilization
         if isinstance(self._gpu_power, Power):

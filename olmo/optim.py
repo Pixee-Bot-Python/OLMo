@@ -344,7 +344,7 @@ class LionW(Optimizer):
         weight_decay: float = 0.0,
     ):
         assert lr > 0.0
-        assert all([0.0 <= beta <= 1.0 for beta in betas])
+        assert all(0.0 <= beta <= 1.0 for beta in betas)
         defaults = dict(lr=lr, betas=betas, weight_decay=weight_decay)
         super().__init__(params, defaults)
         for group in self.param_groups:

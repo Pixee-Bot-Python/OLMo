@@ -229,7 +229,7 @@ def query_openai_chat_model(
     progress_bar = tqdm.tqdm(total=len(instances))
     for i in range(0, len(instances), batch_size):
         batch = instances[i : i + batch_size]
-        if all([x["id"] in existing_data for x in batch]):
+        if all(x["id"] in existing_data for x in batch):
             results.extend([existing_data[x["id"]] for x in batch])
             if output_path is not None:
                 for instance in batch:
@@ -305,7 +305,7 @@ def query_openai_model(
     progress_bar = tqdm.tqdm(total=len(instances))
     for i in range(0, len(instances), batch_size):
         batch = instances[i : i + batch_size]
-        if all([x["id"] in existing_data for x in batch]):
+        if all(x["id"] in existing_data for x in batch):
             results.extend([existing_data[x["id"]] for x in batch])
             if output_path is not None:
                 for instance in batch:

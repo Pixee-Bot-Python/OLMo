@@ -700,7 +700,7 @@ class BaseGPTQForCausalLM(nn.Module, PushToHubMixin):
 
         model_config = model.config.to_dict()
         seq_len_keys = ["max_position_embeddings", "seq_length", "n_positions"]
-        if any([k in model_config for k in seq_len_keys]):
+        if any(k in model_config for k in seq_len_keys):
             for key in seq_len_keys:
                 if key in model_config:
                     model.seqlen = model_config[key]
@@ -863,7 +863,7 @@ class BaseGPTQForCausalLM(nn.Module, PushToHubMixin):
             layers = find_layers(model)
             ignore_layers = [cls.lm_head_name] + cls.outside_layer_modules
             for name in list(layers.keys()):
-                if any([name.startswith(ignore_layer) for ignore_layer in ignore_layers]):
+                if any(name.startswith(ignore_layer) for ignore_layer in ignore_layers):
                     logger.info(f"{name} not been quantized, will be ignored when make_quant.")
                     del layers[name]
 
@@ -920,7 +920,7 @@ class BaseGPTQForCausalLM(nn.Module, PushToHubMixin):
         # == step4: set seqlen == #
         model_config = model.config.to_dict()
         seq_len_keys = ["max_position_embeddings", "seq_length", "n_positions"]
-        if any([k in model_config for k in seq_len_keys]):
+        if any(k in model_config for k in seq_len_keys):
             for key in seq_len_keys:
                 if key in model_config:
                     model.seqlen = model_config[key]

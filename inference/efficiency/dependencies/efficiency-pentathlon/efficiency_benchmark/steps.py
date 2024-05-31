@@ -176,7 +176,7 @@ class PredictStep:
         print(f"Loading outputs from {self.offline_output_path}")
         self.num_instances = len(results)
         efficiency_metrics["throughput"] = self.num_instances / efficiency_metrics["time"]
-        num_output_words = sum([len(result["output"].split()) for result in results])
+        num_output_words = sum(len(result["output"].split()) for result in results)
         efficiency_metrics["throughput_words"] = num_output_words / efficiency_metrics["time"]
         return results, efficiency_metrics
 

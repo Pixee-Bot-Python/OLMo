@@ -119,7 +119,7 @@ def make_data_block(
         input_ids = []
         attention_mask = []
         label_ids = []
-        label_max_len = max([len(sample[1]) for sample in block])
+        label_max_len = max(len(sample[1]) for sample in block)
 
         for sample in block:
             tokenized_prompt, tokenized_label = sample
@@ -151,8 +151,8 @@ def collate_data(blocks: List[Dict[str, List[List[int]]]], pad_token_id: int) ->
     label_blocks = [LongTensor(block["labels"]) for block in blocks]
 
     bsz = len(blocks)
-    inp_max_len = max([block.size(-1) for block in input_ids_blocks])
-    label_max_len = max([block.size(-1) for block in label_blocks])
+    inp_max_len = max(block.size(-1) for block in input_ids_blocks)
+    label_max_len = max(block.size(-1) for block in label_blocks)
 
     for i in range(bsz):
         block_bsz, block_inp_len = input_ids_blocks[i].shape

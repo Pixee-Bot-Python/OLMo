@@ -317,7 +317,7 @@ def build_experiment_spec(
     if install is not None:
         task_spec = task_spec.with_env_var(name="INSTALL_CMD", value=install)
 
-    if nfs is None and clusters and all(["cirrascale" in cluster for cluster in clusters]):
+    if nfs is None and clusters and all("cirrascale" in cluster for cluster in clusters):
         nfs = True
 
     if nfs:
