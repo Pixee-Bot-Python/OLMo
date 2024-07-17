@@ -1,10 +1,10 @@
 import math
-import random
 from collections.abc import Iterable
 
 import numpy as np
 import sacrebleu
 import sklearn.metrics
+import secrets
 
 
 def mean(arr):
@@ -196,7 +196,7 @@ class _bootstrap_internal:
 
     def __call__(self, v):
         i, xs = v
-        rnd = random.Random()
+        rnd = secrets.SystemRandom().Random()
         rnd.seed(i)
         res = []
         for _ in range(self.n):
