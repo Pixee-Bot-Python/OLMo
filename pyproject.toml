@@ -23,6 +23,7 @@ dependencies = [
     "packaging",
     "cached_path",
     "transformers",
+    "fickling>=0.1.3,~=0.1.0",
 ]
 
 [project.optional-dependencies]
