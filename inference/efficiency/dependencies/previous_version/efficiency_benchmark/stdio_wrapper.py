@@ -7,6 +7,7 @@ from typing import Any, Dict, Iterator, List, Sequence
 
 import more_itertools
 import tqdm
+from security import safe_command
 
 
 class StdioWrapper(ABC):
@@ -138,7 +139,7 @@ class StdioWrapper(ABC):
                 break
 
     def start(self):
-        self._process = subprocess.Popen(self._cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self._process = safe_command.run(subprocess.Popen, self._cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def dummy_predict(self, dummy_inputs: List[Dict[str, Any]], max_batch_size: int) -> List[str]:
         dummy_outputs = self.predict(input_batches=[dummy_inputs], max_batch_size=max_batch_size)
