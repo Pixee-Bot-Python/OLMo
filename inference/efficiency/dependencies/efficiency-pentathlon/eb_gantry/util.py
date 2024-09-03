@@ -3,8 +3,6 @@ import tempfile
 import time
 from pathlib import Path
 from typing import TYPE_CHECKING, Iterable, List, Optional, Tuple, Union, cast
-
-import requests
 import rich
 from beaker import (
     Beaker,
@@ -27,6 +25,7 @@ from .aliases import PathOrStr
 from .constants import GITHUB_TOKEN_SECRET
 from .exceptions import *
 from .version import VERSION
+from security import safe_requests
 
 if TYPE_CHECKING:
     from datetime import timedelta
@@ -110,7 +109,7 @@ def ensure_repo(allow_dirty: bool = False) -> Tuple[str, str, str, bool]:
         raise DirtyRepoError("You have uncommitted changes! Use --allow-dirty to force.")
     git_ref = str(repo.commit())
     account, repo = parse_git_remote_url(repo.remote().url)
-    response = requests.get(f"https://github.com/{account}/{repo}")
+    response = safe_requests.get(f"https://github.com/{account}/{repo}")
     if response.status_code not in {200, 404}:
         response.raise_for_status()
     is_public = response.status_code == 200
@@ -338,7 +337,7 @@ def check_for_upgrades():
     import requests
 
     try:
-        response = requests.get("https://api.github.com/repos/allenai/beaker-gantry/releases/latest", timeout=1)
+        response = safe_requests.get("https://api.github.com/repos/allenai/beaker-gantry/releases/latest", timeout=1)
         if response.ok:
             latest_version = packaging.version.parse(response.json()["tag_name"])
             if latest_version > packaging.version.parse(VERSION):
