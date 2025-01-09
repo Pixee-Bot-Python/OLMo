@@ -29,7 +29,7 @@ def textsynth_completion(**kwargs):
     backoff_time = 3
     while True:
         try:
-            return _requests.post(**kwargs)
+            return _requests.post(**kwargs, timeout=60)
         except _requests.exceptions.RequestException:
             import traceback
 
