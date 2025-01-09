@@ -110,7 +110,7 @@ def ensure_repo(allow_dirty: bool = False) -> Tuple[str, str, str, bool]:
         raise DirtyRepoError("You have uncommitted changes! Use --allow-dirty to force.")
     git_ref = str(repo.commit())
     account, repo = parse_git_remote_url(repo.remote().url)
-    response = requests.get(f"https://github.com/{account}/{repo}")
+    response = requests.get(f"https://github.com/{account}/{repo}", timeout=60)
     if response.status_code not in {200, 404}:
         response.raise_for_status()
     is_public = response.status_code == 200
