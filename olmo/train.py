@@ -4,7 +4,6 @@ import cProfile
 import logging
 import math
 import os
-import random
 import shutil
 import time
 from collections import deque
@@ -47,6 +46,7 @@ from .torch_util import (
     synchronize_value,
 )
 from .util import upload
+import secrets
 
 __all__ = ["SpeedMonitor", "LRMonitor", "Trainer"]
 
@@ -210,7 +210,7 @@ class Trainer:
             "unsharded_checkpoints": self.unsharded_checkpoints,
             "ephemeral_checkpoints": self.ephemeral_checkpoints,
             "rng": {
-                "python": random.getstate(),
+                "python": secrets.SystemRandom().getstate(),
                 "numpy": np.random.get_state(),
                 "torch": torch.random.get_rng_state(),
                 "cuda": torch.cuda.get_rng_state(),
@@ -301,7 +301,7 @@ class Trainer:
             )
 
     def restore_rng_state(self, rng_state: Dict[str, Any]) -> None:
-        random.setstate(rng_state["python"])
+        secrets.SystemRandom().setstate(rng_state["python"])
         np.random.set_state(rng_state["numpy"])
         torch.set_rng_state(rng_state["torch"])
         torch.cuda.set_rng_state(rng_state["cuda"])

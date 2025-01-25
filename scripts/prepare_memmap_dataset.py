@@ -19,7 +19,6 @@ import json
 import logging
 import multiprocessing as mp
 import os
-import random
 from concurrent.futures import Future
 from contextlib import ExitStack
 from pathlib import Path
@@ -47,6 +46,7 @@ from smashed.utils.io_utils import (
 
 from olmo import Tokenizer
 from olmo.util import prepare_cli_environment
+import secrets
 
 log = logging.getLogger(__name__)
 
@@ -306,13 +306,13 @@ def make_source_and_target(
     """Recursively list all files in the source directories and create a corresponding list of destination."""
 
     np.random.seed(random_seed)
-    random.seed(random_seed)
+    secrets.SystemRandom().seed(random_seed)
 
     exploded_src = list(set(path for prefix in src for path in recursively_list_files(prefix)))
     output_digits = np.ceil(np.log10(len(exploded_src) + 1)).astype(int)
 
     # shuffle the source paths
-    random.shuffle(exploded_src)
+    secrets.SystemRandom().shuffle(exploded_src)
 
     if paths_per_worker > 1:
         assert (

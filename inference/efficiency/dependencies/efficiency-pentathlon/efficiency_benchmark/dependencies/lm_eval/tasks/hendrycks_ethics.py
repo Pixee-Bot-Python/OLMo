@@ -17,12 +17,12 @@ Homepage: https://github.com/hendrycks/ethics
 """
 import abc
 import inspect
-import random
 
 import efficiency_benchmark.dependencies.lm_eval.datasets.hendrycks_ethics.hendrycks_ethics
 import numpy as np
 from efficiency_benchmark.dependencies.lm_eval.base import Task, rf
 from efficiency_benchmark.dependencies.lm_eval.metrics import mean, yesno
+import secrets
 
 _CITATION = """
 @article{hendrycks2021ethics,
@@ -310,7 +310,7 @@ class EthicsUtilitarianism(Ethics):
             yield self._process_doc(doc)
 
     def _process_doc(self, doc):
-        rnd = random.Random(doc["activity"])
+        rnd = secrets.SystemRandom().Random(doc["activity"])
         scenarios = [doc["activity"], doc["baseline"]]
         ordering = [0, 1]
         rnd.shuffle(ordering)
