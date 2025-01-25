@@ -3,19 +3,19 @@ from typing import Optional, TypeVar
 
 import torch
 import torch.distributed as dist
+import secrets
 
 T = TypeVar("T")
 
 
 def seed_all(seed: int):
     """Seed all rng objects."""
-    import random
 
     import numpy as np
 
     if seed < 0 or seed > 2**32 - 1:
         raise ValueError(f"Seed {seed} is invalid. It must be on [0; 2^32 - 1]")
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     # torch.manual_seed may call manual_seed_all but calling it again here

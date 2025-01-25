@@ -1,5 +1,4 @@
 import json
-import random
 import time
 from argparse import ArgumentParser
 
@@ -7,13 +6,14 @@ import torch
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 from datasets import Dataset
 from transformers import AutoTokenizer, TextGenerationPipeline
+import secrets
 
 
 def load_data(data_path, tokenizer, n_samples):
     with open(data_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 
-    raw_data = random.sample(raw_data, k=min(n_samples, len(raw_data)))
+    raw_data = secrets.SystemRandom().sample(raw_data, k=min(n_samples, len(raw_data)))
 
     def dummy_gen():
         return raw_data
@@ -150,7 +150,7 @@ def main():
     if not max_memory:
         pipeline_init_kwargs["device"] = "cuda:0"
     pipeline = TextGenerationPipeline(**pipeline_init_kwargs)
-    for example in random.sample(examples, k=min(4, len(examples))):
+    for example in secrets.SystemRandom().sample(examples, k=min(4, len(examples))):
         print(f"prompt: {example['prompt']}")
         print("-" * 42)
         print(f"golden: {example['output']}")

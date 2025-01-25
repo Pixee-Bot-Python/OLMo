@@ -1,7 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
-from random import Random
 from typing import (
     Any,
     Callable,
@@ -22,6 +21,7 @@ from efficiency_benchmark.metrics.entropy import EntropyMetric
 from efficiency_benchmark.metrics.perplexity import PerplexityMetric
 from efficiency_benchmark.tango_utils import det_hash
 from mypy_extensions import KwArg
+import secrets
 
 PERPLEXITY_METRICS = {
     "word_perplexity": PerplexityMetric,
@@ -152,7 +152,7 @@ class Task(ABC):
             exceptions = [exceptions]
         exceptions = frozenset(det_hash(e) for e in exceptions)
 
-        r = Random(random_seed)
+        r = secrets.SystemRandom().Random(random_seed)
         instances = self.get_split(self.fewshot_instances_split)
         sampled_instances = [
             instance
