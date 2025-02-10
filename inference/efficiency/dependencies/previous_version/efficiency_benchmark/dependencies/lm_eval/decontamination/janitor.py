@@ -4,6 +4,7 @@ import string
 import timeit
 import traceback
 from pprint import pprint
+import fickling
 
 # This is a cpp module. Compile janitor_util.cpp with:
 # c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) janitor_util.cpp -o janitor_util$(python3-config --extension-suffix) -undefined dynamic_lookup
@@ -135,7 +136,7 @@ class Janitor:
 
     def load_contamination_ngrams(self, filename):
         with open(filename, "rb") as fp:
-            self.dirt_ngrams = pickle.load(fp)
+            self.dirt_ngrams = fickling.load(fp)
 
     ##############
     # Call these :)
