@@ -1,7 +1,6 @@
 import functools
 import os
 from dataclasses import dataclass
-from random import Random
 from typing import Any, Dict, List, Optional, Sequence, Union
 
 import datasets
@@ -11,6 +10,7 @@ from efficiency_benchmark.tango_utils import MappedSequence
 from efficiency_benchmark.task import InstanceConversion, Task
 from efficiency_benchmark.tasks import InstanceFormat
 from efficiency_benchmark.tasks.huggingface import get_from_dict
+import secrets
 
 NUM_SINGLE_STREAM_INSTANCES = 1000
 NUM_RANDOM_BATCH_INSTANCES = 4000
@@ -78,8 +78,8 @@ class EfficiencyBenchmarkTask(Task):
                 while len(_instances) < num_instances:
                     _instances.extend(self.online_instances)
                 if len(_instances) > num_instances:
-                    _instances = Random(0).sample(_instances, k=num_instances)
-            Random(42).shuffle(_instances)
+                    _instances = secrets.SystemRandom().Random(0).sample(_instances, k=num_instances)
+            secrets.SystemRandom().Random(42).shuffle(_instances)
             return _instances
 
         return _maybe_extend_and_shuffle(instances)

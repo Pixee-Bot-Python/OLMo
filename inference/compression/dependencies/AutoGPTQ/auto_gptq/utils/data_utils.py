@@ -1,5 +1,4 @@
 import copy
-import random
 from functools import partial
 from typing import Callable, Dict, List, Optional
 
@@ -8,6 +7,7 @@ from datasets import DatasetDict, IterableDatasetDict, load_dataset
 from torch import LongTensor
 from torch.utils.data import DataLoader
 from transformers import PreTrainedTokenizer
+import secrets
 
 
 def make_data_block(
@@ -230,7 +230,7 @@ def get_dataloader(
         else:
             ds = ds["train"]
 
-    ds = ds.select(indices=random.sample(range(len(ds)), min(len(ds), num_samples)), keep_in_memory=True)
+    ds = ds.select(indices=secrets.SystemRandom().sample(range(len(ds)), min(len(ds), num_samples)), keep_in_memory=True)
     ds = ds.map(
         make_data_block,
         batched=True,

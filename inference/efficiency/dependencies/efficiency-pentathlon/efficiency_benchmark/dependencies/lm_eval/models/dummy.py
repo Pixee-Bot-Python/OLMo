@@ -1,6 +1,6 @@
-import random
 
 from efficiency_benchmark.dependencies.lm_eval.base import LM
+import secrets
 
 
 class DummyLM(LM):
@@ -15,7 +15,7 @@ class DummyLM(LM):
         res = []
 
         for _ in requests:
-            res.append((-random.random(), False))
+            res.append((-secrets.SystemRandom().random(), False))
 
         return res
 
@@ -32,6 +32,6 @@ class DummyLM(LM):
         res = []
 
         for _ in requests:
-            res.append(-random.random())
+            res.append(-secrets.SystemRandom().random())
 
         return res
