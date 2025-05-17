@@ -1,7 +1,6 @@
 import gc
 import io
 import logging
-import pickle
 import shutil
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
@@ -51,6 +50,7 @@ from .util import (
     upload,
     wait_for,
 )
+import fickling
 
 __all__ = [
     "save_fsdp_model_and_optim_state",
@@ -411,7 +411,7 @@ class RemoteFileSystemReader(dist_cp.StorageReader):
     def read_metadata(self) -> Metadata:
         if self._metadata is None:
             with resource_path(self.path, ".metadata", local_cache=self.cache).open("rb") as metadata_file:
-                self._metadata = pickle.load(metadata_file)
+                self._metadata = fickling.load(metadata_file)
         return self._metadata
 
     def set_up_storage_reader(self, metadata: Metadata, is_coordinator: bool) -> None:
