@@ -1,11 +1,11 @@
 import os
-import random
 
 import numpy as np
 import torch
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 from datasets import load_dataset
 from transformers import AutoTokenizer, TextGenerationPipeline
+import secrets
 
 pretrained_model_dir = "gpt2-xl"
 quantized_model_dir = "gpt2-large-4bit-128g"
@@ -14,7 +14,7 @@ quantized_model_dir = "gpt2-large-4bit-128g"
 # os.makedirs(quantized_model_dir, exist_ok=True)
 def get_wikitext2(nsamples, seed, seqlen, tokenizer):
     # set seed
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.random.manual_seed(seed)
 
@@ -26,7 +26,7 @@ def get_wikitext2(nsamples, seed, seqlen, tokenizer):
 
     traindataset = []
     for _ in range(nsamples):
-        i = random.randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
+        i = secrets.SystemRandom().randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
         j = i + seqlen
         inp = trainenc.input_ids[:, i:j]
         attention_mask = torch.ones_like(inp)

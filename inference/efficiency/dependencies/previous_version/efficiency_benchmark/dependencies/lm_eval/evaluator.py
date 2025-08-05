@@ -1,6 +1,5 @@
 import collections
 import itertools
-import random
 
 import efficiency_benchmark.dependencies.lm_eval.base
 import efficiency_benchmark.dependencies.lm_eval.metrics
@@ -11,6 +10,7 @@ from efficiency_benchmark.dependencies.lm_eval.utils import (
     positional_deprecated,
     run_task_tests,
 )
+import secrets
 
 
 @positional_deprecated
@@ -56,7 +56,7 @@ def simple_evaluate(
     :return
         Dictionary of results
     """
-    random.seed(1234)
+    secrets.SystemRandom().seed(1234)
     np.random.seed(1234)
 
     assert tasks != [], "No tasks specified"
@@ -191,7 +191,7 @@ def evaluate(
 
         # deterministically shuffle docs and chop off the first `limit` because sometimes docs are in some kind of order
         task_docs = list(task_doc_func())
-        rnd = random.Random()
+        rnd = secrets.SystemRandom().Random()
         rnd.seed(42)
         rnd.shuffle(task_docs)
 
