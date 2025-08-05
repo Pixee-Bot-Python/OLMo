@@ -19,6 +19,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 from hf_olmo import *  # noqa: F403,F401
+import secrets
 
 
 def get_wikitext2(nsamples, seed, seqlen, model):
@@ -29,15 +30,13 @@ def get_wikitext2(nsamples, seed, seqlen, model):
     trainenc = tokenizer("\n\n".join(traindata["text"]), return_tensors="pt")
     testenc = tokenizer("\n\n".join(testdata["text"]), return_tensors="pt")
 
-    import random
-
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(0)
     torch.random.manual_seed(0)
 
     traindataset = []
     for _ in range(nsamples):
-        i = random.randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
+        i = secrets.SystemRandom().randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
         j = i + seqlen
         inp = trainenc.input_ids[:, i:j]
         attention_mask = torch.ones_like(inp)

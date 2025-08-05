@@ -1,10 +1,10 @@
 import bisect
 import os
-import random
 import shutil
 from collections import abc
 from os import PathLike
 from typing import Any, Callable, Iterable, MutableSequence, Optional, Sequence, Union
+import secrets
 
 
 class ShuffledSequence(abc.Sequence):
@@ -54,7 +54,7 @@ class ShuffledSequence(abc.Sequence):
         self.indices: Sequence[int]
         if indices is None:
             self.indices = list(range(len(inner_sequence)))
-            random.shuffle(self.indices)
+            secrets.SystemRandom().shuffle(self.indices)
         else:
             self.indices = indices
 
